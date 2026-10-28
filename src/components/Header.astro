@@ -4,6 +4,7 @@
 <header class="hero-header">
   <div class="hero-header__bg" aria-hidden="true"></div>
   <div class="hero-header__overlay" aria-hidden="true"></div>
+  <div class="hero-header__glow" aria-hidden="true"></div>
 
   <div class="container hero-header__content">
     <div class="hero-header__logo-wrap">
@@ -14,13 +15,14 @@
         height="300"
         src="/images/dotnetlan-logo-white-259x300.png"
         srcset="/images/dotnetlan-logo-white-259x300.png 259w, /images/dotnetlan-logo-white.png 657w"
-        sizes="(max-width: 767px) 150px, 259px"
+        sizes="(max-width: 767px) 150px, 230px"
         alt="Dotnetklubben logo"
         class="hero-header__logo"
       />
     </div>
 
     <h1 class="hero-header__title">Dotnetklubben</h1>
+    <p class="hero-header__subtitle">Gaming, LAN og sosialt samhold i Nome</p>
 
     <nav class="hero-header__nav" aria-label="Hovedmeny">
       <a
@@ -29,16 +31,23 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        Siste nytt
+        <span>Siste nytt</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       </a>
-      <a class="hero-header__btn" href="#info">
-        Om Dotnetklubben
+      <a class="hero-header__btn hero-header__btn--primary" href="#info">
+        <span>Om Dotnetklubben</span>
       </a>
       <a class="hero-header__btn" href="#kontakt">
-        Kontakt oss
+        <span>Kontakt oss</span>
       </a>
     </nav>
   </div>
+
+  <a href="#info" class="hero-header__scroll" aria-label="Bla ned til innhold">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </a>
 </header>
 
 <style>
@@ -49,29 +58,48 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 40px 20px;
+    padding: 60px 20px 80px 20px;
+    border-bottom: 1px solid rgba(102, 252, 241, 0.15);
   }
 
   .hero-header__bg {
     position: absolute;
     inset: 0;
     background: url('/images/hero-bg.jpg') 50% 50% / cover no-repeat;
+    transform: scale(1.03);
     z-index: 0;
   }
 
   .hero-header__overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--color-bg-dark);
-    opacity: 0.75;
+    background: linear-gradient(
+      180deg,
+      rgba(11, 12, 16, 0.72) 0%,
+      rgba(31, 40, 51, 0.82) 55%,
+      rgba(11, 12, 16, 0.96) 100%
+    );
     z-index: 1;
+  }
+
+  .hero-header__glow {
+    position: absolute;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(102, 252, 241, 0.14) 0%, rgba(102, 252, 241, 0) 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    z-index: 1;
+    pointer-events: none;
   }
 
   .hero-header__content {
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: var(--container-max);
+    max-width: 820px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -82,7 +110,7 @@
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(10px);
     }
     to {
       opacity: 1;
@@ -91,56 +119,101 @@
   }
 
   .hero-header__logo-wrap {
-    padding: 15px 0;
-    margin-bottom: 10px;
+    padding: 10px 0;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.6));
   }
 
   .hero-header__logo {
-    width: 259px;
-    height: 300px;
+    width: 220px;
+    height: 255px;
     object-fit: contain;
     margin: 0 auto;
   }
 
   .hero-header__title {
     font-family: var(--font-display);
-    font-size: 48px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-shadow: 0px 0px 10px #000000;
+    font-size: clamp(42px, 6vw, 60px);
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.85);
     color: var(--color-text-light);
-    margin: 0 0 30px 0;
-    line-height: 1.2;
+    margin: 0 0 8px 0;
+    line-height: 1.1;
+  }
+
+  .hero-header__subtitle {
+    font-size: clamp(16px, 2.2vw, 19px);
+    color: var(--color-text-muted);
+    margin: 0 0 36px 0;
+    letter-spacing: 0.4px;
   }
 
   .hero-header__nav {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 16px;
     width: 100%;
-    max-width: 900px;
+    max-width: 720px;
   }
 
   .hero-header__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 15px 30px;
-    background-color: transparent;
+    gap: 8px;
+    padding: 15px 24px;
+    background: rgba(11, 12, 16, 0.55);
+    backdrop-filter: blur(8px);
     color: var(--color-text-light);
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 16px;
     line-height: 1;
-    border: 1px solid var(--color-cyan);
-    border-radius: 0;
+    border: 1px solid rgba(102, 252, 241, 0.55);
+    border-radius: 6px;
     text-decoration: none;
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .hero-header__btn--primary {
+    background: rgba(102, 252, 241, 0.12);
+    border-color: var(--color-cyan);
   }
 
   .hero-header__btn:hover {
     background-color: var(--color-cyan);
+    border-color: var(--color-cyan);
     color: var(--color-bg-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 252, 241, 0.25);
+  }
+
+  .hero-header__scroll {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: rgba(197, 198, 199, 0.7);
+    padding: 8px;
+    border-radius: 50%;
+    transition: color 0.2s ease, transform 0.2s ease;
+    animation: bounce 2.5s infinite ease-in-out;
+  }
+
+  .hero-header__scroll:hover {
+    color: var(--color-cyan);
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translate(-50%, 0);
+    }
+    50% {
+      transform: translate(-50%, 6px);
+    }
   }
 
   @media (max-width: 767px) {
@@ -149,14 +222,10 @@
       height: 174px;
     }
 
-    .hero-header__title {
-      font-size: 38px;
-    }
-
     .hero-header__nav {
       grid-template-columns: 1fr;
       max-width: 320px;
-      gap: 14px;
+      gap: 12px;
     }
   }
 </style>

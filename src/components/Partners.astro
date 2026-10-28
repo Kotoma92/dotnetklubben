@@ -4,37 +4,43 @@ import partners from '../data/partners.json';
 
 <section class="partners-section" aria-labelledby="partners-heading">
   <div class="container">
-    <h2 id="partners-heading" class="partners-heading">Våre samarbeidspartnere</h2>
+    <div class="partners-header">
+      <span class="partners-badge">Støttespillere</span>
+      <h2 id="partners-heading" class="partners-heading">Våre samarbeidspartnere</h2>
+      <p class="partners-sub">Tusen takk til våre trofaste støttespillere som har bidratt til aktivitet og LAN-glede i Nome</p>
+    </div>
 
-    <div class="dnk-partner-carousel-wrap" id="dnk-partner-carousel">
-      <button type="button" class="dnk-partner-nav dnk-partner-prev" aria-label="Forrige samarbeidspartner">
-        &#10094;
-      </button>
+    <div class="partners-card">
+      <div class="dnk-partner-carousel-wrap" id="dnk-partner-carousel">
+        <button type="button" class="dnk-partner-nav dnk-partner-prev" aria-label="Forrige samarbeidspartner">
+          &#10094;
+        </button>
 
-      <div class="dnk-partner-viewport">
-        <div class="dnk-partner-track">
-          {
-            partners.map((partner) => (
-              <div class="dnk-partner-slide">
-                <a href={partner.url} target="_blank" rel="noopener noreferrer">
-                  <img
-                    decoding="async"
-                    loading="lazy"
-                    src={partner.logo}
-                    alt={partner.name}
-                  />
-                </a>
-              </div>
-            ))
-          }
+        <div class="dnk-partner-viewport">
+          <div class="dnk-partner-track">
+            {
+              partners.map((partner) => (
+                <div class="dnk-partner-slide">
+                  <a href={partner.url} target="_blank" rel="noopener noreferrer" class="dnk-partner-tile" title={partner.name}>
+                    <img
+                      decoding="async"
+                      loading="lazy"
+                      src={partner.logo}
+                      alt={partner.name}
+                    />
+                  </a>
+                </div>
+              ))
+            }
+          </div>
         </div>
+
+        <button type="button" class="dnk-partner-nav dnk-partner-next" aria-label="Neste samarbeidspartner">
+          &#10095;
+        </button>
+
+        <div class="dnk-partner-dots" role="tablist" aria-label="Velg samarbeidspartner"></div>
       </div>
-
-      <button type="button" class="dnk-partner-nav dnk-partner-next" aria-label="Neste samarbeidspartner">
-        &#10095;
-      </button>
-
-      <div class="dnk-partner-dots" role="tablist" aria-label="Velg samarbeidspartner"></div>
     </div>
   </div>
 </section>
@@ -63,8 +69,8 @@ import partners from '../data/partners.json';
       let timer: ReturnType<typeof setInterval> | null = null;
 
       function perView() {
-        if (window.innerWidth <= 600) return 1;
-        if (window.innerWidth <= 900) return 2;
+        if (window.innerWidth <= 640) return 1;
+        if (window.innerWidth <= 920) return 2;
         return 3;
       }
 
@@ -117,7 +123,7 @@ import partners from '../data/partners.json';
       function resetTimer() {
         if (timer) clearInterval(timer);
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          timer = setInterval(next, 3000);
+          timer = setInterval(next, 3200);
         }
       }
 
@@ -142,24 +148,59 @@ import partners from '../data/partners.json';
 
 <style>
   .partners-section {
-    background-color: #ffffff;
-    padding: 30px 0 40px 0;
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid rgba(102, 252, 241, 0.12);
+    border-bottom: 1px solid rgba(102, 252, 241, 0.12);
+    padding: 72px 20px;
+  }
+
+  .partners-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 32px auto;
+  }
+
+  .partners-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-cyan);
+    background: rgba(102, 252, 241, 0.1);
+    border: 1px solid rgba(102, 252, 241, 0.25);
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
   }
 
   .partners-heading {
-    text-align: center;
     font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: clamp(26px, 4vw, 36px);
-    color: var(--color-bg-dark);
-    margin: 0 0 20px 0;
+    font-weight: 700;
+    font-size: clamp(26px, 4vw, 34px);
+    color: var(--color-text-light);
+    margin: 0 0 10px 0;
+  }
+
+  .partners-sub {
+    color: var(--color-text-muted);
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .partners-card {
+    max-width: 920px;
+    margin: 0 auto;
+    background: rgba(31, 40, 51, 0.45);
+    border: 1px solid rgba(102, 252, 241, 0.22);
+    border-radius: 14px;
+    padding: 28px 16px 24px 16px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
   }
 
   .dnk-partner-carousel-wrap {
     position: relative;
-    max-width: 1140px;
-    margin: 20px auto 0 auto;
-    padding: 10px 44px;
+    padding: 4px 44px;
     overflow: hidden;
     user-select: none;
   }
@@ -171,7 +212,7 @@ import partners from '../data/partners.json';
 
   .dnk-partner-track {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     will-change: transform;
   }
@@ -180,45 +221,55 @@ import partners from '../data/partners.json';
     flex: 0 0 33.3333%;
     max-width: 33.3333%;
     box-sizing: border-box;
-    padding: 15px 25px;
+    padding: 8px 10px;
     display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  .dnk-partner-slide a {
+  .dnk-partner-tile {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 160px;
+    height: 136px;
+    padding: 18px 22px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
     text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   }
 
-  .dnk-partner-slide img {
-    max-height: 140px;
+  .dnk-partner-tile:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-cyan);
+    box-shadow: 0 8px 22px rgba(102, 252, 241, 0.2);
+  }
+
+  .dnk-partner-tile img {
+    max-height: 96px;
     max-width: 100%;
     width: auto;
     height: auto;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease;
   }
 
-  .dnk-partner-slide a:hover img {
-    transform: scale(1.06);
+  .dnk-partner-tile:hover img {
+    transform: scale(1.04);
   }
 
   .dnk-partner-nav {
     position: absolute;
-    top: 50%;
+    top: calc(50% - 14px);
     transform: translateY(-50%);
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1px solid rgba(31, 40, 51, 0.25);
-    background: rgba(255, 255, 255, 0.92);
-    color: var(--color-bg-dark);
-    font-size: 18px;
+    border: 1px solid rgba(102, 252, 241, 0.45);
+    background: rgba(11, 12, 16, 0.85);
+    color: var(--color-cyan);
+    font-size: 16px;
     line-height: 1;
     cursor: pointer;
     display: flex;
@@ -230,9 +281,9 @@ import partners from '../data/partners.json';
   }
 
   .dnk-partner-nav:hover {
-    background: var(--color-bg-dark);
-    color: #ffffff;
-    border-color: var(--color-bg-dark);
+    background: var(--color-cyan);
+    color: var(--color-bg-deep);
+    border-color: var(--color-cyan);
   }
 
   .dnk-partner-prev {
@@ -247,33 +298,37 @@ import partners from '../data/partners.json';
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-top: 14px;
+    margin-top: 18px;
   }
 
   :global(.dnk-partner-dot) {
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     border: none;
-    background: rgba(31, 40, 51, 0.25);
+    background: rgba(197, 198, 199, 0.3);
     cursor: pointer;
     padding: 0;
     transition: background-color 0.2s, transform 0.2s;
   }
 
   :global(.dnk-partner-dot.active) {
-    background: var(--color-bg-dark);
-    transform: scale(1.2);
+    background: var(--color-cyan);
+    transform: scale(1.25);
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 920px) {
     .dnk-partner-slide {
       flex: 0 0 50%;
       max-width: 50%;
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
+    .partners-section {
+      padding: 56px 16px;
+    }
+
     .dnk-partner-slide {
       flex: 0 0 100%;
       max-width: 100%;
