@@ -1,0 +1,153 @@
+---
+import { getEntry } from 'astro:content';
+import CallToAction from './CallToAction.astro';
+
+const article = await getEntry('nyheter', 'en-epoke-er-over');
+if (!article) {
+  throw new Error('Could not find main article content in src/content/nyheter/en-epoke-er-over.md');
+}
+
+const { title, lead, cards, community } = article.data;
+---
+
+<section id="info" class="info-section" aria-labelledby="info-heading">
+  <div class="container">
+    <h2 id="info-heading" class="section-heading">{title}</h2>
+
+    <div class="dnk-info-wrap">
+      <p class="dnk-lead" set:html={lead} />
+
+      <div class="dnk-cards">
+        {
+          cards.map((card) => (
+            <article class="dnk-card">
+              <h3>{card.title}</h3>
+              {card.paragraphs.map((p) => (
+                <p>{p}</p>
+              ))}
+            </article>
+          ))
+        }
+      </div>
+
+      <CallToAction
+        heading={community.heading}
+        text={community.text}
+        links={community.links}
+      />
+    </div>
+  </div>
+</section>
+
+<section class="video-section" aria-label="Tilbakeblikk fra DotnetLAN">
+  <div class="container">
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/7VtQC3fpsQg"
+        title="DotnetLAN tilbakeblikk (YouTube)"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  .info-section {
+    background-color: var(--color-bg-dark);
+    padding: 60px 20px;
+  }
+
+  .section-heading {
+    text-align: center;
+    color: var(--color-cyan);
+    font-family: var(--font-sans);
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 600;
+    margin: 0 0 24px 0;
+    line-height: 1.25;
+  }
+
+  .dnk-info-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    line-height: 1.75;
+    font-size: 17px;
+  }
+
+  .dnk-lead {
+    font-size: 19px;
+    color: var(--color-text-light);
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 36px auto;
+  }
+
+  .dnk-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .dnk-card {
+    background: rgba(11, 12, 16, 0.55);
+    border: 1px solid rgba(102, 252, 241, 0.25);
+    border-radius: 8px;
+    padding: 26px 28px;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .dnk-card:hover {
+    border-color: rgba(102, 252, 241, 0.65);
+  }
+
+  .dnk-card h3 {
+    color: var(--color-cyan);
+    font-size: 21px;
+    margin: 0 0 12px 0;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .dnk-card p {
+    margin: 0 0 12px 0;
+    color: var(--color-text-muted);
+  }
+
+  .dnk-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .video-section {
+    background-color: #ffffff;
+    padding: 30px 0;
+  }
+
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: var(--color-bg-deep);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (max-width: 768px) {
+    .dnk-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

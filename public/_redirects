@@ -1,0 +1,8 @@
+# Redirect legacy WordPress URLs to the home page
+/hjem                 /   301
+/hjem/                /   301
+/cookieerklaering-eu  /   301
+/cookieerklaering-eu/ /   301
+/feed                 /   301
+/feed/                /   301
+/wp-content/uploads/2022/12/Samtykkeskjema2022.pdf /Samtykkeskjema2022.pdf 301

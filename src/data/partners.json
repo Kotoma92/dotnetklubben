@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Tripletex",
+    "url": "https://www.tripletex.no",
+    "logo": "/images/partners/tripletex.png"
+  },
+  {
+    "name": "Sparebankstiftelsen Telemark",
+    "url": "https://sparebankstiftelsentelemark.no/",
+    "logo": "/images/partners/sparebankstiftelsen-telemark.png"
+  },
+  {
+    "name": "Rett Profilering",
+    "url": "https://www.rettprofilering.no",
+    "logo": "/images/partners/rett-profilering.jpg"
+  },
+  {
+    "name": "Gjensidigestiftelsen",
+    "url": "https://www.gjensidigestiftelsen.no/",
+    "logo": "/images/partners/gjensidigestiftelsen.jpg"
+  },
+  {
+    "name": "Nextron",
+    "url": "https://www.nextron.no",
+    "logo": "/images/partners/nextron.png"
+  },
+  {
+    "name": "Nome Kommune",
+    "url": "https://nome.kommune.no",
+    "logo": "/images/partners/nome-kommune.png"
+  }
+]

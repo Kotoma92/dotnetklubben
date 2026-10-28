@@ -1,0 +1,95 @@
+---
+interface LinkItem {
+  label: string;
+  url: string;
+  external?: boolean;
+}
+
+interface Props {
+  heading: string;
+  text: string;
+  links: LinkItem[];
+}
+
+const { heading, text, links } = Astro.props;
+---
+
+<div class="dnk-community-bar">
+  <div class="dnk-community-text">
+    <strong>{heading}</strong>
+    {text}
+  </div>
+  <div class="dnk-social-links">
+    {
+      links.map((link) => (
+        <a
+          class="dnk-social-btn"
+          href={link.url}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .dnk-community-bar {
+    background: rgba(11, 12, 16, 0.4);
+    border: 1px solid rgba(102, 252, 241, 0.2);
+    border-radius: 8px;
+    padding: 22px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .dnk-community-text {
+    flex: 1 1 420px;
+    color: var(--color-text-muted);
+  }
+
+  .dnk-community-text strong {
+    color: var(--color-text-light);
+    display: block;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .dnk-social-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .dnk-social-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid var(--color-cyan);
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .dnk-social-btn:hover {
+    background: var(--color-cyan);
+    color: var(--color-bg-deep);
+  }
+
+  @media (max-width: 768px) {
+    .dnk-community-bar {
+      text-align: center;
+      justify-content: center;
+    }
+
+    .dnk-social-links {
+      justify-content: center;
+    }
+  }
+</style>
