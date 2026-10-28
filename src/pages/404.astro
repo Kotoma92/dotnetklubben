@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Side ikke funnet (404) - Dotnetklubben">
+  <main id="main-content" class="not-found">
+    <div class="container not-found__inner">
+      <img
+        src="/images/dotnetlan-logo-white-259x300.png"
+        alt="Dotnetklubben logo"
+        width="150"
+        height="174"
+        class="not-found__logo"
+      />
+      <h1>404 &ndash; Side ikke funnet</h1>
+      <p>Siden du leter etter finnes ikke eller har blitt flyttet.</p>
+      <a href="/" class="not-found__btn">Tilbake til forsiden</a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .not-found {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg-dark);
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .not-found__inner {
+    max-width: 560px;
+  }
+
+  .not-found__logo {
+    margin: 0 auto 24px auto;
+  }
+
+  .not-found h1 {
+    color: var(--color-cyan);
+    font-family: var(--font-display);
+    font-size: 40px;
+    margin: 0 0 12px 0;
+  }
+
+  .not-found p {
+    color: var(--color-text-muted);
+    font-size: 18px;
+    margin: 0 0 28px 0;
+  }
+
+  .not-found__btn {
+    display: inline-block;
+    padding: 12px 26px;
+    border: 1px solid var(--color-cyan);
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .not-found__btn:hover {
+    background-color: var(--color-cyan);
+    color: var(--color-bg-deep);
+  }
+</style>

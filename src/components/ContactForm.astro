@@ -1,0 +1,398 @@
+---
+const web3FormsKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
+const formspreeEndpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT ?? '';
+const actionUrl = formspreeEndpoint || 'https://api.web3forms.com/submit';
+---
+
+<section id="kontakt" class="contact-section" aria-labelledby="contact-heading">
+  <div class="container">
+    <h2 id="contact-heading" class="contact-heading">Kontakt oss</h2>
+
+    <form
+      id="contact-form"
+      class="contact-form"
+      action={actionUrl}
+      method="POST"
+      novalidate
+      data-has-key={Boolean(web3FormsKey || formspreeEndpoint) ? 'true' : 'false'}
+    >
+      {web3FormsKey && <input type="hidden" name="access_key" value={web3FormsKey} />}
+      <input type="hidden" name="from_name" value="Dotnetklubben Kontaktskjema" />
+
+      <!-- Honeypot field against spam bots -->
+      <div class="honeypot-wrap" aria-hidden="true">
+        <label for="botcheck">Ikke fyll ut dette feltet</label>
+        <input type="checkbox" name="botcheck" id="botcheck" tabindex="-1" autocomplete="off" />
+        <input type="text" name="input_5" id="input_5" value="" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div id="form-feedback" class="form-feedback" role="alert" aria-live="polite" hidden></div>
+
+      <div class="form-row">
+        <label for="contact-name" class="form-label">
+          Navn <span class="form-required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="contact-name"
+          name="name"
+          class="form-input"
+          required
+          aria-required="true"
+          autocomplete="name"
+        />
+        <span class="field-error" id="error-name" hidden>Dette feltet er påkrevd.</span>
+      </div>
+
+      <div class="form-row">
+        <label for="contact-email" class="form-label">
+          E-postadresse <span class="form-required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="email"
+          id="contact-email"
+          name="email"
+          class="form-input"
+          required
+          aria-required="true"
+          autocomplete="email"
+        />
+        <span class="field-error" id="error-email" hidden>Vennligst oppgi en gyldig e-postadresse.</span>
+      </div>
+
+      <div class="form-row">
+        <label for="contact-subject" class="form-label">
+          Emne <span class="form-required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="contact-subject"
+          name="subject"
+          class="form-input"
+          required
+          aria-required="true"
+        />
+        <span class="field-error" id="error-subject" hidden>Dette feltet er påkrevd.</span>
+      </div>
+
+      <div class="form-row">
+        <label for="contact-message" class="form-label">
+          Din melding <span class="form-required" aria-hidden="true">*</span>
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          class="form-textarea"
+          rows="6"
+          maxlength="180"
+          required
+          aria-required="true"
+          aria-describedby="message-counter"
+        ></textarea>
+        <div class="form-meta">
+          <span class="field-error" id="error-message" hidden>Dette feltet er påkrevd (maks 180 tegn).</span>
+          <span id="message-counter" class="char-counter">0 / 180</span>
+        </div>
+      </div>
+
+      <div class="form-row form-row--submit">
+        <button type="submit" id="contact-submit" class="form-submit">
+          Send
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    const nameInput = document.getElementById('contact-name') as HTMLInputElement;
+    const emailInput = document.getElementById('contact-email') as HTMLInputElement;
+    const subjectInput = document.getElementById('contact-subject') as HTMLInputElement;
+    const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement;
+    const counterEl = document.getElementById('message-counter') as HTMLElement;
+    const feedbackEl = document.getElementById('form-feedback') as HTMLElement;
+    const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement;
+    const honeypotText = document.getElementById('input_5') as HTMLInputElement;
+    const honeypotCheck = document.getElementById('botcheck') as HTMLInputElement;
+
+    const MAX_LEN = 180;
+
+    function updateCounter() {
+      const len = messageInput.value.length;
+      counterEl.textContent = `${len} / ${MAX_LEN}`;
+      counterEl.classList.toggle('is-limit', len >= MAX_LEN);
+    }
+
+    messageInput.addEventListener('input', updateCounter);
+    updateCounter();
+
+    function showError(input: HTMLElement, errorId: string, show: boolean, customMsg?: string) {
+      const errEl = document.getElementById(errorId);
+      input.classList.toggle('has-error', show);
+      if (errEl) {
+        if (customMsg) errEl.textContent = customMsg;
+        errEl.hidden = !show;
+      }
+    }
+
+    function validate(): boolean {
+      let valid = true;
+
+      const nameVal = nameInput.value.trim();
+      if (!nameVal) {
+        showError(nameInput, 'error-name', true);
+        valid = false;
+      } else {
+        showError(nameInput, 'error-name', false);
+      }
+
+      const emailVal = emailInput.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailVal || !emailRegex.test(emailVal)) {
+        showError(
+          emailInput,
+          'error-email',
+          true,
+          !emailVal ? 'Dette feltet er påkrevd.' : 'Vennligst oppgi en gyldig e-postadresse.'
+        );
+        valid = false;
+      } else {
+        showError(emailInput, 'error-email', false);
+      }
+
+      const subjectVal = subjectInput.value.trim();
+      if (!subjectVal) {
+        showError(subjectInput, 'error-subject', true);
+        valid = false;
+      } else {
+        showError(subjectInput, 'error-subject', false);
+      }
+
+      const messageVal = messageInput.value.trim();
+      if (!messageVal) {
+        showError(messageInput, 'error-message', true, 'Dette feltet er påkrevd.');
+        valid = false;
+      } else if (messageVal.length > MAX_LEN) {
+        showError(messageInput, 'error-message', true, `Meldingen kan være maks ${MAX_LEN} tegn.`);
+        valid = false;
+      } else {
+        showError(messageInput, 'error-message', false);
+      }
+
+      return valid;
+    }
+
+    [nameInput, emailInput, subjectInput, messageInput].forEach((el) => {
+      el.addEventListener('blur', () => validate());
+      el.addEventListener('input', () => {
+        if (el.classList.contains('has-error')) validate();
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      feedbackEl.hidden = true;
+      feedbackEl.className = 'form-feedback';
+
+      // Honeypot check
+      if (honeypotText.value !== '' || honeypotCheck.checked) {
+        return;
+      }
+
+      if (!validate()) {
+        feedbackEl.textContent = 'Vennligst rett opp feilene i skjemaet før innsending.';
+        feedbackEl.classList.add('is-error');
+        feedbackEl.hidden = false;
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const origText = submitBtn.textContent;
+      submitBtn.textContent = 'Sender...';
+
+      try {
+        const formData = new FormData(form);
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Accept: 'application/json',
+          },
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok && data.success !== false) {
+          feedbackEl.textContent = 'Takk for din henvendelse! Vi har mottatt meldingen din og tar kontakt så snart vi kan.';
+          feedbackEl.classList.add('is-success');
+          feedbackEl.hidden = false;
+          form.reset();
+          updateCounter();
+        } else {
+          throw new Error(data.message || 'Kunne ikke sende skjemaet.');
+        }
+      } catch {
+        feedbackEl.textContent =
+          'Det oppstod en feil ved innsending av skjemaet. Vennligst prøv igjen senere eller ta kontakt via Discord/Facebook.';
+        feedbackEl.classList.add('is-error');
+        feedbackEl.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = origText;
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact-section {
+    background-color: var(--color-bg-dark);
+    padding: 40px 20px 60px 20px;
+  }
+
+  .contact-heading {
+    color: var(--color-cyan);
+    font-family: var(--font-sans);
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 600;
+    margin: 0 0 24px 0;
+  }
+
+  .contact-form {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .honeypot-wrap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form-feedback {
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    border-radius: 2px;
+  }
+
+  .form-feedback[hidden] {
+    display: none;
+  }
+
+  .form-feedback.is-error {
+    background-color: #F9E4E8;
+    color: #333333;
+    box-shadow: inset 3px 0 0 0 var(--color-error);
+  }
+
+  .form-feedback.is-success {
+    background-color: #BCEEE6;
+    color: #1F2833;
+    box-shadow: inset 3px 0 0 0 var(--color-teal-btn);
+  }
+
+  .form-row {
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-light);
+    margin-bottom: 6px;
+  }
+
+  .form-required {
+    color: var(--color-error);
+  }
+
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: #000000;
+    background-color: #EDEDED;
+    border: 1px solid #777771;
+    border-radius: 2px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .form-input:hover,
+  .form-textarea:hover,
+  .form-input:focus,
+  .form-textarea:focus {
+    background-color: #E6E6E6;
+    border-color: var(--color-cyan);
+  }
+
+  .form-input.has-error,
+  .form-textarea.has-error {
+    border-color: var(--color-error);
+  }
+
+  .form-textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  .form-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+    gap: 12px;
+  }
+
+  .char-counter {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+
+  .char-counter.is-limit {
+    color: var(--color-cyan);
+    font-weight: 600;
+  }
+
+  .field-error {
+    display: block;
+    font-size: 12px;
+    color: #ff8fa3;
+    margin-top: 4px;
+  }
+
+  .field-error[hidden] {
+    display: none;
+  }
+
+  .form-submit {
+    display: inline-block;
+    padding: 12px 28px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: var(--color-teal-btn);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .form-submit:hover:not(:disabled) {
+    background-color: var(--color-teal-btn-hover);
+  }
+
+  .form-submit:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+</style>

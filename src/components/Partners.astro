@@ -1,0 +1,282 @@
+---
+import partners from '../data/partners.json';
+---
+
+<section class="partners-section" aria-labelledby="partners-heading">
+  <div class="container">
+    <h2 id="partners-heading" class="partners-heading">Våre samarbeidspartnere</h2>
+
+    <div class="dnk-partner-carousel-wrap" id="dnk-partner-carousel">
+      <button type="button" class="dnk-partner-nav dnk-partner-prev" aria-label="Forrige samarbeidspartner">
+        &#10094;
+      </button>
+
+      <div class="dnk-partner-viewport">
+        <div class="dnk-partner-track">
+          {
+            partners.map((partner) => (
+              <div class="dnk-partner-slide">
+                <a href={partner.url} target="_blank" rel="noopener noreferrer">
+                  <img
+                    decoding="async"
+                    loading="lazy"
+                    src={partner.logo}
+                    alt={partner.name}
+                  />
+                </a>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <button type="button" class="dnk-partner-nav dnk-partner-next" aria-label="Neste samarbeidspartner">
+        &#10095;
+      </button>
+
+      <div class="dnk-partner-dots" role="tablist" aria-label="Velg samarbeidspartner"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.getElementById('dnk-partner-carousel');
+  if (root) {
+    const track = root.querySelector('.dnk-partner-track') as HTMLElement | null;
+    const dotsWrap = root.querySelector('.dnk-partner-dots') as HTMLElement | null;
+    const prevBtn = root.querySelector('.dnk-partner-prev') as HTMLButtonElement | null;
+    const nextBtn = root.querySelector('.dnk-partner-next') as HTMLButtonElement | null;
+
+    if (track && dotsWrap && prevBtn && nextBtn) {
+      const origSlides = Array.from(track.children);
+      const total = origSlides.length;
+
+      origSlides.forEach((s) => {
+        const clone = s.cloneNode(true) as HTMLElement;
+        clone.setAttribute('aria-hidden', 'true');
+        const link = clone.querySelector('a');
+        if (link) link.tabIndex = -1;
+        track.appendChild(clone);
+      });
+
+      let idx = 0;
+      let timer: ReturnType<typeof setInterval> | null = null;
+
+      function perView() {
+        if (window.innerWidth <= 600) return 1;
+        if (window.innerWidth <= 900) return 2;
+        return 3;
+      }
+
+      for (let i = 0; i < total; i++) {
+        const d = document.createElement('button');
+        d.type = 'button';
+        d.className = 'dnk-partner-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', `Vis partner ${i + 1}`);
+        d.addEventListener('click', () => {
+          goTo(i);
+          resetTimer();
+        });
+        dotsWrap.appendChild(d);
+      }
+
+      const dots = Array.from(dotsWrap.children);
+
+      function updateDots() {
+        const active = ((idx % total) + total) % total;
+        dots.forEach((d, i) => d.classList.toggle('active', i === active));
+      }
+
+      function goTo(newIdx: number, animate = true) {
+        if (!track) return;
+        idx = newIdx;
+        const step = 100 / perView();
+        track.style.transition = animate ? 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)' : 'none';
+        track.style.transform = `translateX(-${idx * step}%)`;
+        updateDots();
+      }
+
+      function next() {
+        goTo(idx + 1, true);
+        if (idx >= total) {
+          setTimeout(() => {
+            if (idx >= total) goTo(idx - total, false);
+          }, 620);
+        }
+      }
+
+      function prev() {
+        if (idx <= 0) {
+          goTo(total, false);
+          requestAnimationFrame(() => requestAnimationFrame(() => goTo(total - 1, true)));
+        } else {
+          goTo(idx - 1, true);
+        }
+      }
+
+      function resetTimer() {
+        if (timer) clearInterval(timer);
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          timer = setInterval(next, 3000);
+        }
+      }
+
+      nextBtn.addEventListener('click', () => {
+        next();
+        resetTimer();
+      });
+      prevBtn.addEventListener('click', () => {
+        prev();
+        resetTimer();
+      });
+      root.addEventListener('mouseenter', () => {
+        if (timer) clearInterval(timer);
+      });
+      root.addEventListener('mouseleave', resetTimer);
+      window.addEventListener('resize', () => goTo(idx % total, false));
+
+      resetTimer();
+    }
+  }
+</script>
+
+<style>
+  .partners-section {
+    background-color: #ffffff;
+    padding: 30px 0 40px 0;
+  }
+
+  .partners-heading {
+    text-align: center;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(26px, 4vw, 36px);
+    color: var(--color-bg-dark);
+    margin: 0 0 20px 0;
+  }
+
+  .dnk-partner-carousel-wrap {
+    position: relative;
+    max-width: 1140px;
+    margin: 20px auto 0 auto;
+    padding: 10px 44px;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .dnk-partner-viewport {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .dnk-partner-track {
+    display: flex;
+    align-items: center;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+  }
+
+  .dnk-partner-slide {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+    box-sizing: border-box;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dnk-partner-slide a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 160px;
+    text-decoration: none;
+  }
+
+  .dnk-partner-slide img {
+    max-height: 140px;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .dnk-partner-slide a:hover img {
+    transform: scale(1.06);
+  }
+
+  .dnk-partner-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(31, 40, 51, 0.25);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-bg-dark);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    padding: 0;
+  }
+
+  .dnk-partner-nav:hover {
+    background: var(--color-bg-dark);
+    color: #ffffff;
+    border-color: var(--color-bg-dark);
+  }
+
+  .dnk-partner-prev {
+    left: 4px;
+  }
+
+  .dnk-partner-next {
+    right: 4px;
+  }
+
+  .dnk-partner-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  :global(.dnk-partner-dot) {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(31, 40, 51, 0.25);
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+
+  :global(.dnk-partner-dot.active) {
+    background: var(--color-bg-dark);
+    transform: scale(1.2);
+  }
+
+  @media (max-width: 900px) {
+    .dnk-partner-slide {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .dnk-partner-slide {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+</style>

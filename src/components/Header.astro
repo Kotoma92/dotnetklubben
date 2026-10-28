@@ -1,0 +1,162 @@
+---
+---
+
+<header class="hero-header">
+  <div class="hero-header__bg" aria-hidden="true"></div>
+  <div class="hero-header__overlay" aria-hidden="true"></div>
+
+  <div class="container hero-header__content">
+    <div class="hero-header__logo-wrap">
+      <img
+        fetchpriority="high"
+        decoding="async"
+        width="259"
+        height="300"
+        src="/images/dotnetlan-logo-white-259x300.png"
+        srcset="/images/dotnetlan-logo-white-259x300.png 259w, /images/dotnetlan-logo-white.png 657w"
+        sizes="(max-width: 767px) 150px, 259px"
+        alt="Dotnetklubben logo"
+        class="hero-header__logo"
+      />
+    </div>
+
+    <h1 class="hero-header__title">Dotnetklubben</h1>
+
+    <nav class="hero-header__nav" aria-label="Hovedmeny">
+      <a
+        class="hero-header__btn"
+        href="https://www.facebook.com/dotnetklubben"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Siste nytt
+      </a>
+      <a class="hero-header__btn" href="#info">
+        Om Dotnetklubben
+      </a>
+      <a class="hero-header__btn" href="#kontakt">
+        Kontakt oss
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hero-header {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 40px 20px;
+  }
+
+  .hero-header__bg {
+    position: absolute;
+    inset: 0;
+    background: url('/images/hero-bg.jpg') 50% 50% / cover no-repeat;
+    z-index: 0;
+  }
+
+  .hero-header__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-bg-dark);
+    opacity: 0.75;
+    z-index: 1;
+  }
+
+  .hero-header__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--container-max);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-header__logo-wrap {
+    padding: 15px 0;
+    margin-bottom: 10px;
+  }
+
+  .hero-header__logo {
+    width: 259px;
+    height: 300px;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+
+  .hero-header__title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-shadow: 0px 0px 10px #000000;
+    color: var(--color-text-light);
+    margin: 0 0 30px 0;
+    line-height: 1.2;
+  }
+
+  .hero-header__nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .hero-header__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    background-color: transparent;
+    color: var(--color-text-light);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1;
+    border: 1px solid var(--color-cyan);
+    border-radius: 0;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .hero-header__btn:hover {
+    background-color: var(--color-cyan);
+    color: var(--color-bg-deep);
+  }
+
+  @media (max-width: 767px) {
+    .hero-header__logo {
+      width: 150px;
+      height: 174px;
+    }
+
+    .hero-header__title {
+      font-size: 38px;
+    }
+
+    .hero-header__nav {
+      grid-template-columns: 1fr;
+      max-width: 320px;
+      gap: 14px;
+    }
+  }
+</style>
