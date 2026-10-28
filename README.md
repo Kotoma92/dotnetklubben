@@ -16,6 +16,8 @@ src/
   data/partners.json          # Samarbeidspartnere (navn, logo, url)
   pages/index.astro           # Forsiden
   pages/404.astro             # 404-side
+functions/
+  api/kontakt.ts              # Cloudflare Pages Function (Resend + Turnstile)
 public/
   fonts/                      # Selvhostede fonter (Roboto & Advent Pro)
   images/                     # Logoer, bakgrunnsbilde og partnerlogoer
@@ -27,8 +29,11 @@ public/
 
 - **Hovedartikkel og tekst:** Rediger [`src/content/nyheter/en-epoke-er-over.md`](src/content/nyheter/en-epoke-er-over.md).
 - **Samarbeidspartnere:** Legg til, fjern eller endre partnere i [`src/data/partners.json`](src/data/partners.json) og legg eventuelle nye logoer i `public/images/partners/`.
-- **Kontaktskjema (Web3Forms / Formspree):**
-  Sett miljøvariabelen `PUBLIC_WEB3FORMS_ACCESS_KEY` (fra [Web3Forms](https://web3forms.com)) eller `PUBLIC_FORMSPREE_ENDPOINT` (fra [Formspree](https://formspree.io)) i Cloudflare Pages / Netlify (eller i `.env` lokalt, se `.env.example`).
+- **Kontaktskjema (Cloudflare Pages Function + Resend, med Web3Forms fallback):**
+  Skjemaet poster til `/api/kontakt` ([`functions/api/kontakt.ts`](functions/api/kontakt.ts)), som sender e-post fra `Dotnetklubben <noreply@dotnetklubben.org>` til `kristian@rolandtech.org` via [Resend](https://resend.com).
+  - Sett `RESEND_API_KEY` i Cloudflare Pages → Settings → Environment variables.
+  - Valgfritt: Sett `PUBLIC_TURNSTILE_SITE_KEY` og `TURNSTILE_SECRET_KEY` for Cloudflare Turnstile anti-spam.
+  - Hvis `RESEND_API_KEY` ikke er konfigurert ennå, faller skjemaet automatisk tilbake til Web3Forms (`PUBLIC_WEB3FORMS_ACCESS_KEY`).
 
 ## Utvikling lokalt
 
