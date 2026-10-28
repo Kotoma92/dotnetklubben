@@ -4,11 +4,7 @@ import partners from '../data/partners.json';
 
 <section class="partners-section" aria-labelledby="partners-heading">
   <div class="container">
-    <div class="partners-header">
-      <span class="partners-badge">Støttespillere</span>
-      <h2 id="partners-heading" class="partners-heading">Våre samarbeidspartnere</h2>
-      <p class="partners-sub">Tusen takk til våre trofaste støttespillere som har bidratt til aktivitet og LAN-glede i Nome</p>
-    </div>
+    <h2 id="partners-heading" class="partners-heading">Våre samarbeidspartnere</h2>
 
     <div class="partners-card">
       <div class="dnk-partner-carousel-wrap" id="dnk-partner-carousel">
@@ -149,58 +145,30 @@ import partners from '../data/partners.json';
 <style>
   .partners-section {
     background-color: var(--color-bg-deep);
-    border-top: 1px solid rgba(102, 252, 241, 0.12);
-    border-bottom: 1px solid rgba(102, 252, 241, 0.12);
-    padding: 72px 20px;
-  }
-
-  .partners-header {
-    text-align: center;
-    max-width: 680px;
-    margin: 0 auto 32px auto;
-  }
-
-  .partners-badge {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--color-cyan);
-    background: rgba(102, 252, 241, 0.1);
-    border: 1px solid rgba(102, 252, 241, 0.25);
-    padding: 5px 14px;
-    border-radius: 999px;
-    margin-bottom: 14px;
+    padding: 56px 20px;
   }
 
   .partners-heading {
+    text-align: center;
     font-family: var(--font-sans);
-    font-weight: 700;
+    font-weight: 600;
     font-size: clamp(26px, 4vw, 34px);
-    color: var(--color-text-light);
-    margin: 0 0 10px 0;
-  }
-
-  .partners-sub {
-    color: var(--color-text-muted);
-    font-size: 16px;
-    margin: 0;
+    color: var(--color-cyan);
+    margin: 0 0 28px 0;
   }
 
   .partners-card {
-    max-width: 920px;
+    max-width: 900px;
     margin: 0 auto;
-    background: rgba(31, 40, 51, 0.45);
-    border: 1px solid rgba(102, 252, 241, 0.22);
-    border-radius: 14px;
-    padding: 28px 16px 24px 16px;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+    background-color: #ffffff;
+    border: 1px solid rgba(102, 252, 241, 0.35);
+    border-radius: 2px;
+    padding: 18px 8px;
   }
 
   .dnk-partner-carousel-wrap {
     position: relative;
-    padding: 4px 44px;
+    padding: 6px 42px;
     overflow: hidden;
     user-select: none;
   }
@@ -212,7 +180,7 @@ import partners from '../data/partners.json';
 
   .dnk-partner-track {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     will-change: transform;
   }
@@ -221,8 +189,10 @@ import partners from '../data/partners.json';
     flex: 0 0 33.3333%;
     max-width: 33.3333%;
     box-sizing: border-box;
-    padding: 8px 10px;
+    padding: 10px 20px;
     display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .dnk-partner-tile {
@@ -230,24 +200,12 @@ import partners from '../data/partners.json';
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 136px;
-    padding: 18px 22px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.9);
+    height: 140px;
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  }
-
-  .dnk-partner-tile:hover {
-    transform: translateY(-3px);
-    border-color: var(--color-cyan);
-    box-shadow: 0 8px 22px rgba(102, 252, 241, 0.2);
   }
 
   .dnk-partner-tile img {
-    max-height: 96px;
+    max-height: 120px;
     max-width: 100%;
     width: auto;
     height: auto;
@@ -256,19 +214,19 @@ import partners from '../data/partners.json';
   }
 
   .dnk-partner-tile:hover img {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 
   .dnk-partner-nav {
     position: absolute;
-    top: calc(50% - 14px);
+    top: calc(50% - 12px);
     transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid rgba(102, 252, 241, 0.45);
-    background: rgba(11, 12, 16, 0.85);
-    color: var(--color-cyan);
+    width: 34px;
+    height: 34px;
+    border-radius: 2px;
+    border: 1px solid rgba(31, 40, 51, 0.25);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-bg-dark);
     font-size: 16px;
     line-height: 1;
     cursor: pointer;
@@ -281,24 +239,24 @@ import partners from '../data/partners.json';
   }
 
   .dnk-partner-nav:hover {
-    background: var(--color-cyan);
-    color: var(--color-bg-deep);
-    border-color: var(--color-cyan);
+    background: var(--color-bg-dark);
+    color: #ffffff;
+    border-color: var(--color-bg-dark);
   }
 
   .dnk-partner-prev {
-    left: 4px;
+    left: 6px;
   }
 
   .dnk-partner-next {
-    right: 4px;
+    right: 6px;
   }
 
   .dnk-partner-dots {
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-top: 18px;
+    margin-top: 10px;
   }
 
   :global(.dnk-partner-dot) {
@@ -306,15 +264,15 @@ import partners from '../data/partners.json';
     height: 9px;
     border-radius: 50%;
     border: none;
-    background: rgba(197, 198, 199, 0.3);
+    background: rgba(31, 40, 51, 0.25);
     cursor: pointer;
     padding: 0;
     transition: background-color 0.2s, transform 0.2s;
   }
 
   :global(.dnk-partner-dot.active) {
-    background: var(--color-cyan);
-    transform: scale(1.25);
+    background: var(--color-bg-dark);
+    transform: scale(1.2);
   }
 
   @media (max-width: 920px) {
@@ -325,10 +283,6 @@ import partners from '../data/partners.json';
   }
 
   @media (max-width: 640px) {
-    .partners-section {
-      padding: 56px 16px;
-    }
-
     .dnk-partner-slide {
       flex: 0 0 100%;
       max-width: 100%;
