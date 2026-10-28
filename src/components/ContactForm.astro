@@ -6,109 +6,123 @@ const actionUrl = '/api/kontakt';
 
 <section id="kontakt" class="contact-section" aria-labelledby="contact-heading">
   <div class="container">
-    <h2 id="contact-heading" class="contact-heading">Kontakt oss</h2>
+    <div class="contact-header">
+      <span class="contact-badge">Ta kontakt</span>
+      <h2 id="contact-heading" class="contact-heading">Kontakt styret</h2>
+      <p class="contact-sub">
+        Har du spørsmål, innspill eller en idé til et arrangement i Nome? Send oss en melding under!
+      </p>
+    </div>
 
-    <form
-      id="contact-form"
-      class="contact-form"
-      action={actionUrl}
-      method="POST"
-      novalidate
-      data-web3forms-key={web3FormsKey}
-    >
-      <input type="hidden" name="from_name" value="Dotnetklubben Kontaktskjema" />
+    <div class="contact-card">
+      <form
+        id="contact-form"
+        class="contact-form"
+        action={actionUrl}
+        method="POST"
+        novalidate
+        data-web3forms-key={web3FormsKey}
+      >
+        <input type="hidden" name="from_name" value="Dotnetklubben Kontaktskjema" />
 
-      <!-- Honeypot field against spam bots -->
-      <div class="honeypot-wrap" aria-hidden="true">
-        <label for="botcheck">Ikke fyll ut dette feltet</label>
-        <input type="checkbox" name="botcheck" id="botcheck" tabindex="-1" autocomplete="off" />
-        <input type="text" name="input_5" id="input_5" value="" tabindex="-1" autocomplete="off" />
-      </div>
-
-      <div id="form-feedback" class="form-feedback" role="alert" aria-live="polite" hidden></div>
-
-      <div class="form-row">
-        <label for="contact-name" class="form-label">
-          Navn <span class="form-required" aria-hidden="true">*</span>
-        </label>
-        <input
-          type="text"
-          id="contact-name"
-          name="name"
-          class="form-input"
-          required
-          aria-required="true"
-          autocomplete="name"
-        />
-        <span class="field-error" id="error-name" hidden>Dette feltet er påkrevd.</span>
-      </div>
-
-      <div class="form-row">
-        <label for="contact-email" class="form-label">
-          E-postadresse <span class="form-required" aria-hidden="true">*</span>
-        </label>
-        <input
-          type="email"
-          id="contact-email"
-          name="email"
-          class="form-input"
-          required
-          aria-required="true"
-          autocomplete="email"
-        />
-        <span class="field-error" id="error-email" hidden>Vennligst oppgi en gyldig e-postadresse.</span>
-      </div>
-
-      <div class="form-row">
-        <label for="contact-subject" class="form-label">
-          Emne <span class="form-required" aria-hidden="true">*</span>
-        </label>
-        <input
-          type="text"
-          id="contact-subject"
-          name="subject"
-          class="form-input"
-          required
-          aria-required="true"
-        />
-        <span class="field-error" id="error-subject" hidden>Dette feltet er påkrevd.</span>
-      </div>
-
-      <div class="form-row">
-        <label for="contact-message" class="form-label">
-          Din melding <span class="form-required" aria-hidden="true">*</span>
-        </label>
-        <textarea
-          id="contact-message"
-          name="message"
-          class="form-textarea"
-          rows="6"
-          maxlength="180"
-          required
-          aria-required="true"
-          aria-describedby="message-counter"
-        ></textarea>
-        <div class="form-meta">
-          <span class="field-error" id="error-message" hidden>Dette feltet er påkrevd (maks 180 tegn).</span>
-          <span id="message-counter" class="char-counter">0 / 180</span>
+        <!-- Honeypot field against spam bots -->
+        <div class="honeypot-wrap" aria-hidden="true">
+          <label for="botcheck">Ikke fyll ut dette feltet</label>
+          <input type="checkbox" name="botcheck" id="botcheck" tabindex="-1" autocomplete="off" />
+          <input type="text" name="input_5" id="input_5" value="" tabindex="-1" autocomplete="off" />
         </div>
-      </div>
 
-      {
-        turnstileSiteKey && (
+        <div id="form-feedback" class="form-feedback" role="alert" aria-live="polite" hidden></div>
+
+        <div class="form-grid">
           <div class="form-row">
-            <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="dark"></div>
-            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>
+            <label for="contact-name" class="form-label">
+              Navn <span class="form-required" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="contact-name"
+              name="name"
+              placeholder="Ditt navn"
+              class="form-input"
+              required
+              aria-required="true"
+              autocomplete="name"
+            />
+            <span class="field-error" id="error-name" hidden>Dette feltet er påkrevd.</span>
           </div>
-        )
-      }
 
-      <div class="form-row form-row--submit">
-        <button type="submit" id="contact-submit" class="form-submit">
-          Send
-        </button>
-      </div>
-    </form>
+          <div class="form-row">
+            <label for="contact-email" class="form-label">
+              E-postadresse <span class="form-required" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="email"
+              id="contact-email"
+              name="email"
+              placeholder="din@epost.no"
+              class="form-input"
+              required
+              aria-required="true"
+              autocomplete="email"
+            />
+            <span class="field-error" id="error-email" hidden>Vennligst oppgi en gyldig e-postadresse.</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="contact-subject" class="form-label">
+            Emne <span class="form-required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="contact-subject"
+            name="subject"
+            placeholder="Hva gjelder henvendelsen?"
+            class="form-input"
+            required
+            aria-required="true"
+          />
+          <span class="field-error" id="error-subject" hidden>Dette feltet er påkrevd.</span>
+        </div>
+
+        <div class="form-row">
+          <label for="contact-message" class="form-label">
+            Din melding <span class="form-required" aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            placeholder="Skriv meldingen din her (maks 180 tegn)..."
+            class="form-textarea"
+            rows="5"
+            maxlength="180"
+            required
+            aria-required="true"
+            aria-describedby="message-counter"
+          ></textarea>
+          <div class="form-meta">
+            <span class="field-error" id="error-message" hidden>Dette feltet er påkrevd (maks 180 tegn).</span>
+            <span id="message-counter" class="char-counter">0 / 180</span>
+          </div>
+        </div>
+
+        {
+          turnstileSiteKey && (
+            <div class="form-row">
+              <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="dark"></div>
+              <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>
+            </div>
+          )
+        }
+
+        <div class="form-row form-row--submit">
+          <button type="submit" id="contact-submit" class="form-submit">
+            Send melding
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -283,21 +297,52 @@ const actionUrl = '/api/kontakt';
 
 <style>
   .contact-section {
-    background-color: var(--color-bg-dark);
-    padding: 40px 20px 60px 20px;
+    background: linear-gradient(180deg, var(--color-bg-dark) 0%, var(--color-bg-deep) 100%);
+    padding: 72px 20px 88px 20px;
+  }
+
+  .contact-header {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 32px auto;
+  }
+
+  .contact-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-cyan);
+    background: rgba(102, 252, 241, 0.1);
+    border: 1px solid rgba(102, 252, 241, 0.25);
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
   }
 
   .contact-heading {
-    color: var(--color-cyan);
+    color: var(--color-text-light);
     font-family: var(--font-sans);
-    font-size: clamp(26px, 4vw, 36px);
-    font-weight: 600;
-    margin: 0 0 24px 0;
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 700;
+    margin: 0 0 10px 0;
   }
 
-  .contact-form {
-    max-width: 100%;
+  .contact-sub {
+    color: var(--color-text-muted);
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .contact-card {
+    max-width: 720px;
     margin: 0 auto;
+    background: rgba(11, 12, 16, 0.65);
+    border: 1px solid rgba(102, 252, 241, 0.22);
+    border-radius: 14px;
+    padding: 36px 38px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
   }
 
   .honeypot-wrap {
@@ -310,9 +355,9 @@ const actionUrl = '/api/kontakt';
 
   .form-feedback {
     padding: 14px 18px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     font-size: 15px;
-    border-radius: 2px;
+    border-radius: 8px;
   }
 
   .form-feedback[hidden] {
@@ -320,52 +365,73 @@ const actionUrl = '/api/kontakt';
   }
 
   .form-feedback.is-error {
-    background-color: #F9E4E8;
-    color: #333333;
-    box-shadow: inset 3px 0 0 0 var(--color-error);
+    background-color: rgba(224, 69, 98, 0.14);
+    color: #ff9ebb;
+    border: 1px solid rgba(224, 69, 98, 0.45);
   }
 
   .form-feedback.is-success {
-    background-color: #BCEEE6;
-    color: #1F2833;
-    box-shadow: inset 3px 0 0 0 var(--color-teal-btn);
+    background-color: rgba(102, 252, 241, 0.12);
+    color: var(--color-cyan);
+    border: 1px solid rgba(102, 252, 241, 0.4);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 
   .form-row {
     margin-bottom: 20px;
   }
 
+  .form-row--submit {
+    margin-bottom: 0;
+    margin-top: 8px;
+  }
+
   .form-label {
     display: block;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 500;
     color: var(--color-text-light);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   .form-required {
-    color: var(--color-error);
+    color: var(--color-cyan);
   }
 
   .form-input,
   .form-textarea {
     width: 100%;
-    padding: 10px 12px;
+    padding: 12px 14px;
     font-family: var(--font-sans);
     font-size: 16px;
-    color: #000000;
-    background-color: #EDEDED;
-    border: 1px solid #777771;
-    border-radius: 2px;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    color: var(--color-text-light);
+    background-color: rgba(31, 40, 51, 0.65);
+    border: 1px solid rgba(197, 198, 199, 0.25);
+    border-radius: 8px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: rgba(197, 198, 199, 0.45);
   }
 
   .form-input:hover,
-  .form-textarea:hover,
+  .form-textarea:hover {
+    border-color: rgba(102, 252, 241, 0.45);
+  }
+
   .form-input:focus,
   .form-textarea:focus {
-    background-color: #E6E6E6;
+    background-color: rgba(31, 40, 51, 0.9);
     border-color: var(--color-cyan);
+    box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.12);
+    outline: none;
   }
 
   .form-input.has-error,
@@ -374,7 +440,7 @@ const actionUrl = '/api/kontakt';
   }
 
   .form-textarea {
-    min-height: 140px;
+    min-height: 130px;
     resize: vertical;
   }
 
@@ -388,7 +454,7 @@ const actionUrl = '/api/kontakt';
 
   .char-counter {
     margin-left: auto;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--color-text-muted);
   }
 
@@ -399,9 +465,9 @@ const actionUrl = '/api/kontakt';
 
   .field-error {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     color: #ff8fa3;
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
   .field-error[hidden] {
@@ -409,25 +475,48 @@ const actionUrl = '/api/kontakt';
   }
 
   .form-submit {
-    display: inline-block;
-    padding: 12px 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 32px;
     font-family: var(--font-sans);
-    font-size: 15px;
-    font-weight: 500;
-    color: #ffffff;
-    background-color: var(--color-teal-btn);
-    border: none;
-    border-radius: 2px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-bg-deep);
+    background-color: var(--color-cyan);
+    border: 1px solid var(--color-cyan);
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.15s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
   }
 
   .form-submit:hover:not(:disabled) {
-    background-color: var(--color-teal-btn-hover);
+    background-color: #8afff7;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(102, 252, 241, 0.28);
   }
 
   .form-submit:disabled {
-    opacity: 0.7;
+    opacity: 0.65;
     cursor: wait;
+  }
+
+  @media (max-width: 640px) {
+    .contact-section {
+      padding: 56px 16px 72px 16px;
+    }
+
+    .contact-card {
+      padding: 24px 20px;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .form-submit {
+      width: 100%;
+    }
   }
 </style>
