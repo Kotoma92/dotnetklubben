@@ -1,7 +1,7 @@
 ---
 const web3FormsKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || '2a8440ec-bc50-4686-90eb-749b136af77c';
-const formspreeEndpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT ?? '';
-const actionUrl = formspreeEndpoint || 'https://api.web3forms.com/submit';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+const actionUrl = '/api/kontakt';
 ---
 
 <section id="kontakt" class="contact-section" aria-labelledby="contact-heading">
@@ -14,9 +14,8 @@ const actionUrl = formspreeEndpoint || 'https://api.web3forms.com/submit';
       action={actionUrl}
       method="POST"
       novalidate
-      data-has-key={Boolean(web3FormsKey || formspreeEndpoint) ? 'true' : 'false'}
+      data-web3forms-key={web3FormsKey}
     >
-      {web3FormsKey && <input type="hidden" name="access_key" value={web3FormsKey} />}
       <input type="hidden" name="from_name" value="Dotnetklubben Kontaktskjema" />
 
       <!-- Honeypot field against spam bots -->
@@ -94,6 +93,15 @@ const actionUrl = formspreeEndpoint || 'https://api.web3forms.com/submit';
           <span id="message-counter" class="char-counter">0 / 180</span>
         </div>
       </div>
+
+      {
+        turnstileSiteKey && (
+          <div class="form-row">
+            <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="dark"></div>
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>
+          </div>
+        )
+      }
 
       <div class="form-row form-row--submit">
         <button type="submit" id="contact-submit" class="form-submit">
@@ -191,6 +199,20 @@ const actionUrl = formspreeEndpoint || 'https://api.web3forms.com/submit';
       });
     });
 
+    async function submitToWeb3Forms(formData: FormData, accessKey: string) {
+      const fallbackData = new FormData();
+      formData.forEach((value, key) => fallbackData.append(key, value));
+      fallbackData.set('access_key', accessKey);
+
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: fallbackData,
+        headers: { Accept: 'application/json' },
+      });
+      const data = await res.json().catch(() => ({}));
+      return { ok: res.ok && data.success !== false, data };
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       feedbackEl.hidden = true;
@@ -222,10 +244,21 @@ const actionUrl = formspreeEndpoint || 'https://api.web3forms.com/submit';
           },
         });
 
-        const data = await res.json().catch(() => ({}));
+        let data = await res.json().catch(() => ({}));
+        let succeeded = res.ok && data.success !== false;
 
-        if (res.ok && data.success !== false) {
-          feedbackEl.textContent = 'Takk for din henvendelse! Vi har mottatt meldingen din og tar kontakt så snart vi kan.';
+        // Automatic fallback to Web3Forms if Cloudflare Pages Function isn't configured with RESEND_API_KEY yet or running on static dev server
+        const fallbackKey = form.dataset.web3formsKey;
+        if (!succeeded && (res.status === 404 || res.status === 500 || res.status === 502) && fallbackKey) {
+          const fallbackResult = await submitToWeb3Forms(formData, fallbackKey);
+          succeeded = fallbackResult.ok;
+          data = fallbackResult.data;
+        }
+
+        if (succeeded) {
+          feedbackEl.textContent =
+            data.message ||
+            'Takk for din henvendelse! Vi har mottatt meldingen din og tar kontakt så snart vi kan.';
           feedbackEl.classList.add('is-success');
           feedbackEl.hidden = false;
           form.reset();
@@ -233,9 +266,11 @@ const actionUrl = formspreeEndpoint || 'https://api.web3forms.com/submit';
         } else {
           throw new Error(data.message || 'Kunne ikke sende skjemaet.');
         }
-      } catch {
+      } catch (err) {
         feedbackEl.textContent =
-          'Det oppstod en feil ved innsending av skjemaet. Vennligst prøv igjen senere eller ta kontakt via Discord/Facebook.';
+          err instanceof Error && err.message
+            ? err.message
+            : 'Det oppstod en feil ved innsending av skjemaet. Vennligst prøv igjen senere eller ta kontakt via Discord/Facebook.';
         feedbackEl.classList.add('is-error');
         feedbackEl.hidden = false;
       } finally {
